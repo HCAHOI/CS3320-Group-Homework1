@@ -215,11 +215,13 @@ function initDepartmentChart () {
     });
   }
 
-  let margin = { top: 5, right: 0, bottom: 5, left: 20 },
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+  let container = document.getElementById('department-chart-container');
 
-  let svg = d3.select('#department-chart').append('svg')
+  let margin = { top: 35, right: 0, bottom: 0, left: 160 },
+    width = container.clientWidth - margin.left - margin.right,
+    height = container.clientHeight - margin.top - margin.bottom;
+
+  let svg = d3.select('#department-chart-container').append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
     .append('g')
@@ -230,15 +232,14 @@ function initDepartmentChart () {
     .domain([0, d3.max(finalData, function (d) { return d.enter; })]);
 
   let xRight = d3.scaleLinear()
-    .range([0, width / 2])
-    .domain([0, d3.max(finalData, function (d) { return d.enter; })]);
+    .range([0, width / 4])
+    .domain([0, d3.max(finalData, function (d) { return d.borrow; })]);
 
   let y = d3.scaleBand()
-    .range([0, height / 8])
+    .range([0, height / 24 * 15])
     .padding(0.1)
     .domain(finalData.map(function (d) { return d.department; }));
 
-// 创建入馆人数的条形
   svg.selectAll('.enter-bar')
     .data(finalData)
     .enter().append('rect')
@@ -249,7 +250,6 @@ function initDepartmentChart () {
     .attr('height', y.bandwidth())
     .attr('fill', 'steelblue');
 
-// 创建借书数目的条形
   svg.selectAll('.borrow-bar')
     .data(finalData)
     .enter().append('rect')
@@ -260,24 +260,22 @@ function initDepartmentChart () {
     .attr('height', y.bandwidth())
     .attr('fill', 'darkorange');
 
-// 添加 y 轴
   svg.append('g')
     .attr('class', 'y axis')
     .attr('transform', 'translate(' + 0 + ',0)')
     .call(d3.axisLeft(y));
 
-// 添加左侧 x 轴
   svg.append('g')
     .attr('class', 'x axis')
     .attr('transform', 'translate(0,' + (y.bandwidth() + y.padding()) * 6 + ')')
-    .call(d3.axisBottom(xLeft).ticks(5));
+    .call(d3.axisBottom(xLeft).ticks(3));
 
-// 添加右侧 x 轴
   svg.append('g')
     .attr('class', 'x axis')
     .attr('ticks', 5)
     .attr('transform', 'translate(' + width / 2 + ',' + (y.bandwidth() + y.padding()) * 6 + ')')
-    .call(d3.axisBottom(xRight).ticks(5));
+    .call(d3.axisBottom(xRight).ticks(2));
+
 
 }
 
@@ -394,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let departmentChartContainer = document.createElement('div');
   departmentChartContainer.id = 'department-chart-container';
   departmentChartContainer.style.width = '100%';
-  departmentChartContainer.style.height = '20vh';
+  departmentChartContainer.style.height = '16vh';
   departmentBox.appendChild(departmentChartContainer);
 
   // borrowTopBox element
