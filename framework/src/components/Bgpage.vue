@@ -2,7 +2,7 @@
     <div class="bgpage">
       <Header></Header>
       <!-- 用两个box作为示例，具体使用请自行更改 -->
-      <input id="date-input" name="date" type="date">
+      <input id="date-input" name="date" type="date" value="2023-04-01" />
       <div>
             <div id="left-top-container">
                 <div id='reader-statistics' class="box">
@@ -87,21 +87,62 @@ export default {
   flex-direction: column;
   font-size: 1em;
   width: 30vw;
+  top: 0;
+}
+
+#left-top-container .in-title {
+  position: absolute;
+  z-index: 0;
+  margin-top: 0;
 }
 
 #left-top-container .box {
   flex: 1;
-  width: 30vw;
-  margin: 10px;
+  margin: 4px;
   color: white;
+}
+
+#left-top-container #readerBox {
+  flex-direction: row;
+}
+
+#left-top-container #basic-info {
+  position: relative;
+  margin-left: 10px;
+  top: 6vh;
+  left: 0;
+  height: 20vh;
+}
+
+#left-top-container #basic-info div {
+  padding: 5px;
+}
+
+#left-top-container #pie-chart-container {
+  position: relative;
+  top: 2vh;
 }
 
 #left-top-container .box button {
   position: relative;
-  top: -8vh;
   left: 14vw;
 }
 
+#left-top-container #view-time-span {
+  margin-right: 5px;
+  right: 5px;
+  position: absolute;
+}
 
+#left-top-container #view-selector {
+  margin-top: 2px;
+  margin-bottom: 5px;
+}
+
+#left-top-container .view-item {
+  position: relative;
+  left: 20px;
+  padding: 1px;
+}
 
 </style>

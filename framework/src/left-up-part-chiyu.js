@@ -147,7 +147,7 @@ function generateView (day, end) {
 
     // create item
     let item = document.createElement('div');
-    item.className = 'viewItem';
+    item.className = 'view-item';
     item.textContent = msg;
 
     // append item
@@ -165,14 +165,14 @@ function initPieChart (idMap) {
   let pieChart = echarts.init(document.getElementById('pie-chart-container'));
   pieChart.setOption({
     title: {
-      text: 'ID Distribution',
+      text: '',
     },
     tooltip: {
       trigger: 'item',
       formatter: '{a} <br/>{b} : {c} ({d}%)',
     },
     legend: {
-      data: ['ID'],
+      data: [],
     },
     series: [{
       name: 'ID',
@@ -204,7 +204,6 @@ function initDepartmentChart () {
     borrowChartData.push({ department: dep.department, value: departmentBorrowMap.get(dep.department) || 0 });
   });
 
-  console.log(borrowChartData);
 
   // zig
   let finalData = [];
@@ -216,19 +215,16 @@ function initDepartmentChart () {
     });
   }
 
-// 设置 SVG 尺寸和边距
-  let margin = { top: 20, right: 120, bottom: 20, left: 120 },
+  let margin = { top: 5, right: 0, bottom: 5, left: 20 },
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-// 创建 SVG 容器
   let svg = d3.select('#department-chart').append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-// 设置 x 和 y 比例尺
   let xLeft = d3.scaleLinear()
     .range([width / 2, 0])
     .domain([0, d3.max(finalData, function (d) { return d.enter; })]);
@@ -301,7 +297,7 @@ function loadEnterData () {
 
 function loadBorrowData () {
   let xhrBorrow = new XMLHttpRequest();
-  xhrBorrow.open('GET', '../01-2023年全年图书借阅预约归还等数据.json', false);
+  xhrBorrow.open('GET', '../data/01-2023年全年图书借阅预约归还等数据.json', false);
   xhrBorrow.onreadystatechange = function () {
     if (xhrBorrow.readyState === 4 && xhrBorrow.status === 200) {
       borrowData = JSON.parse(xhrBorrow.responseText).RECORDS;
@@ -359,12 +355,12 @@ function processData () {
 
   departmentEnterMap = departmentBorrowMap; // TODO: For debug purpose. Remove this line later
 
-  console.log(eventTypeMap);
-  console.log(borrowIdentificationMap);
-  console.log(departmentBorrowMap);
-  console.log(departmentEnterMap);
-  console.log(bookInfoMap);
-  console.log(dailyBookBorrowMap);
+  // console.log(eventTypeMap);
+  // console.log(borrowIdentificationMap);
+  // console.log(departmentBorrowMap);
+  // console.log(departmentEnterMap);
+  // console.log(bookInfoMap);
+  // console.log(dailyBookBorrowMap);
 
 }
 
@@ -390,11 +386,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let pieChartContainer = document.createElement('div');
   pieChartContainer.id = 'pie-chart-container';
+  pieChartContainer.style.width = '60%';
+  pieChartContainer.style.height = '120%';
   readerBox.appendChild(pieChartContainer);
 
   // departmentBox element
   let departmentChartContainer = document.createElement('div');
   departmentChartContainer.id = 'department-chart-container';
+  departmentChartContainer.style.width = '100%';
+  departmentChartContainer.style.height = '20vh';
   departmentBox.appendChild(departmentChartContainer);
 
   // borrowTopBox element
@@ -421,7 +421,7 @@ document.addEventListener('DOMContentLoaded', function () {
   viewTimeSpan.id = 'view-time-span';
 
   let viewTop4 = document.createElement('div');
-  viewTop4.id = 'view-top-4';
+  viewTop4.id = 'view-top4';
 
   borrowTopBox.appendChild(viewSelector);
   borrowTopBox.appendChild(viewTimeSpan);
@@ -475,5 +475,10 @@ document.addEventListener('DOMContentLoaded', function () {
   // charts
   initPieChart(borrowIdentificationMap);
   initDepartmentChart();
-
+  // view
+  let date = document.getElementById('date-input').value;
+  let day = new Date();
+  let end = new Date();
+  [currentView, day, end] = getWeekView(new Date(date));
+  generateView(day, end);
 });
