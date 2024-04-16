@@ -4,6 +4,30 @@ document.addEventListener('DOMContentLoaded', function () {
   let departmentBox = document.querySelector('#department-distribution .data-box')
   let borrowTopBox = document.querySelector('#borrow-top .data-box')
 
+  // readerBox element
+  readerBox.style.display = 'flex';
+  let basicInfo = document.createElement('div');
+  basicInfo.id = 'basic-info';
+  let enterInfo = document.createElement('div');
+  enterInfo.textContent = '入馆人数: 114514';
+  enterInfo.style.color = 'white';
+  let borrowInfo = document.createElement('div');
+  borrowInfo.textContent = '借书人数: 1919810';
+  borrowInfo.style.color = 'white';
+  basicInfo.appendChild(enterInfo);
+  basicInfo.appendChild(borrowInfo);
+  readerBox.appendChild(basicInfo);
+
+  let pieChartContainer = document.createElement('div');
+  pieChartContainer.id = 'pie-chart-container';
+  readerBox.appendChild(pieChartContainer);
+
+  // departmentBox element
+  let departmentChartContainer = document.createElement('div');
+  departmentChartContainer.id = 'department-chart-container';
+  departmentBox.appendChild(departmentChartContainer);
+
+  // borrowTopBox element
   let viewSelector = document.createElement('div');
   viewSelector.id = 'view-selector';
   let weekViewButton = document.createElement('button');
