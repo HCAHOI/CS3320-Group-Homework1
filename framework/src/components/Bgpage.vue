@@ -81,10 +81,11 @@ export default {
   left: 30px;
 }
 
+
 #left-top-container {
   display: flex;
   flex-direction: column;
-  font-size: 1.5em;
+  font-size: 1em;
   width: 30vw;
 }
 
@@ -92,5 +93,15 @@ export default {
   flex: 1;
   width: 30vw;
   margin: 10px;
+  color: white;
 }
+
+#left-top-container .box button {
+  position: relative;
+  top: -8vh;
+  left: 14vw;
+}
+
+
+
 </style>
