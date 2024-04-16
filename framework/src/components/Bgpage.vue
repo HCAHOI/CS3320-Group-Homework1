@@ -89,7 +89,7 @@ export default {
 
 #left-top-container .box {
   flex: 1;
-  width: 33vw;
+  width: 30vw;
   margin: 10px;
 }
 </style>
