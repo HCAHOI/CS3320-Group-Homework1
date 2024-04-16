@@ -2,7 +2,7 @@
     <div class="header">
         <div class="bg-header">
             <div class="t-title">
-                数据可视化平台
+                图书馆数据可视化平台
             </div>
         </div>
     </div>
@@ -31,8 +31,9 @@ export default {
     width: 100%;
     height: 100%;
     text-align: center;
-    font-size: 3em;
+    font-size: 2em;
     line-height: 80px;
+    font-weight: bold;
     color: #fff;
 }
 </style>
