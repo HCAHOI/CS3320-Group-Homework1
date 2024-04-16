@@ -86,7 +86,7 @@ function getBorrowView (startDate, endDate) {
     return b.value - a.value;
   });
 
-  console.log(borrowArray);
+  // console.log(borrowArray);
   return borrowArray;
 }
 
@@ -140,15 +140,27 @@ function generateView (day, end) {
     let bookName = currentView[idx].key;
     let bookAuthor = bookInfoMap.get(bookName);
 
-    let msg = 'NO. ' + (idx + 1).toString() + ' ' + bookName;
+    let prefixDiv = document.createElement('div');
+    prefixDiv.textContent = 'NO. ' + (idx + 1).toString();
+    prefixDiv.style.marginRight = '10px';
+    prefixDiv.style.color = 'rgb(71, 136, 251)';
+    prefixDiv.style.fontWeight = 'bold';
+
+    let bookInfo = bookName;
     if (bookAuthor !== null) {
-      msg += ' - ' + bookAuthor;
+      bookInfo += ' - ' + bookAuthor;
     }
+
+    let bookInfoDiv = document.createElement('div');
+    bookInfoDiv.textContent = bookInfo;
+    bookInfoDiv.style.color = 'white';
 
     // create item
     let item = document.createElement('div');
     item.className = 'view-item';
-    item.textContent = msg;
+    item.style.display = 'flex';
+    item.appendChild(prefixDiv);
+    item.appendChild(bookInfoDiv);
 
     // append item
     view.appendChild(item);
@@ -196,7 +208,7 @@ function initDepartmentChart () {
 
   // enter top5
   let topEnterDepartments = enterChartData.slice(0, 5);
-  console.log(topEnterDepartments);
+  // console.log(topEnterDepartments);
 
   // get borrow data of top5
   let borrowChartData = [];
@@ -426,8 +438,8 @@ document.addEventListener('DOMContentLoaded', function () {
   borrowTopBox.appendChild(viewTop4);
 
   document.getElementById('date-input').addEventListener('change', function () {
-    let date = document.getElementById('date-input').value;
-    console.log(date);
+    // let date = document.getElementById('date-input').value;
+    // console.log(date);
   });
 
   document.getElementById('week-view').addEventListener('click', function () {

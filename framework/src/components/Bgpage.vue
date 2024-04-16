@@ -77,10 +77,40 @@ export default {
 
 #date-input {
   position: absolute;
-  top: 15px;
+  top: 10px;
   left: 30px;
 }
 
+input[type="date"] {
+  background-color: rgb(39, 81, 151);
+  border: 1px solid rgb(39, 81, 151);
+  border-radius: 4px;
+  padding: 5px;
+  color: white;
+  font-size: 12px;
+  font-family: 'Arial', sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  margin: 5px;
+  transition: all 0.3s ease;
+  opacity: 0.7;
+}
+
+#date-input:hover {
+  border-color: #a5a5a5;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  color: black;
+  opacity: 1;
+}
+
+#date-input:focus {
+  border-color: #a5a5a5;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  color: black;
+  opacity: 1;
+}
 
 #left-top-container {
   display: flex;
@@ -126,6 +156,11 @@ export default {
 #left-top-container .box button {
   position: relative;
   left: 14vw;
+  background-color: rgb(28, 58, 108);
+  border: none;
+  color: white;
+  margin-right: 1px;
+  opacity: 0.8;
 }
 
 #left-top-container #view-time-span {
