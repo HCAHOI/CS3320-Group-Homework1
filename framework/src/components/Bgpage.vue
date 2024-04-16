@@ -1,8 +1,9 @@
 <template>
     <div class="bgpage">
-        <Header></Header>
-        <!-- 用两个box作为示例，具体使用请自行更改 -->
-        <div>
+      <Header></Header>
+      <!-- 用两个box作为示例，具体使用请自行更改 -->
+      <input id="date-input" name="date" type="date">
+      <div>
             <div id="left-top-container">
                 <div id='reader-statistics' class="box">
                     <Viewbox
@@ -72,6 +73,12 @@ export default {
     flex: 1; /* 每个子元素占据相等的空间 */
     height: 300px;
     margin: 10px;
+}
+
+#date-input {
+  position: absolute;
+  top: 15px;
+  left: 30px;
 }
 
 #left-top-container {
