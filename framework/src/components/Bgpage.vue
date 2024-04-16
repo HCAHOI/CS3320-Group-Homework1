@@ -85,6 +85,7 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: 1.5em;
+  width: 30vw;
 }
 
 #left-top-container .box {
