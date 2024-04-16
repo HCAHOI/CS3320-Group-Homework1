@@ -1,0 +1,42 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div id="main" style="width: 600px; height: 400px;"></div>-->
+
+<!--    <script src="new_book_leaderboard.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>横向排行榜</title>
+    <script src="echarts.min.js"></script>
+
+</head>
+<body>
+<div id="total_resource" style="width: 900px;height:200px;"></div>
+<div id="daily_number" style="width: 900px;height:400px;"></div>
+
+<label for="year">年:</label>
+<input type="number" id="year" name="year" min="2023" max="2023" required>
+
+<label for="month">月:</label>
+<input type="number" id="month" name="month" min="1" max="12" required>
+
+<label for="day">日:</label>
+<input type="number" id="day" name="day" min="1" max="31" required>
+<button type="button" onclick="get_date()">Confirm</button>
+
+<div id="main" style="width: 900px;height:400px;"></div>
+
+
+<script src="new_book_leaderboard.js"></script>
+<script src="real_time_people_number.js"></script>
+</body>
+</html>
