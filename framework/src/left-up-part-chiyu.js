@@ -417,6 +417,8 @@ function processData () {
 
 // ---------------------------------------------
 document.addEventListener('DOMContentLoaded', function () {
+  loadData();
+
   let readerBox = document.querySelector('#reader-statistics .data-box')
   let departmentBox = document.querySelector('#department-distribution .data-box')
   let borrowTopBox = document.querySelector('#borrow-top .data-box')
@@ -426,11 +428,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let basicInfo = document.createElement('div');
   basicInfo.id = 'basic-info';
   let enterInfo = document.createElement('div');
-  enterInfo.textContent = '入馆人数: 114514';
-  enterInfo.style.color = 'white';
+  enterInfo.textContent = '入馆人数: ' + enterData.length;
   let borrowInfo = document.createElement('div');
-  borrowInfo.textContent = '借书人数: 1919810';
-  borrowInfo.style.color = 'white';
+  borrowInfo.textContent = '借书人数: ' + borrowData.length;
   basicInfo.appendChild(enterInfo);
   basicInfo.appendChild(borrowInfo);
   readerBox.appendChild(basicInfo);
@@ -522,7 +522,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // document.getElementById('borrow').textContent = '本年借书人次: ' + borrowCount;
   // document.getElementById('enter').textContent = '本年进馆人次: ' + enterCount;
 
-  loadData();
   // charts
   initPieChart(borrowIdentificationMap);
   initDepartmentChart();

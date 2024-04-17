@@ -104,14 +104,6 @@ input[type="date"] {
   opacity: 1;
 }
 
-#date-input:focus {
-  border-color: #a5a5a5;
-  background-color: white;
-  box-shadow: 0 0 5px rgba(0,0,0,0.2);
-  color: black;
-  opacity: 1;
-}
-
 #left-top-container {
   display: flex;
   flex-direction: column;
@@ -142,6 +134,7 @@ input[type="date"] {
   top: 6vh;
   left: 0;
   height: 20vh;
+  font-weight: bold;
 }
 
 #left-top-container #basic-info div {
@@ -156,11 +149,17 @@ input[type="date"] {
 #left-top-container .box button {
   position: relative;
   left: 14vw;
-  background-color: rgb(28, 58, 108);
+  background-color: transparent;
   border: none;
   color: white;
   margin-right: 1px;
   opacity: 0.8;
+  border-radius: 3px;
+}
+
+#left-top-container .box button:hover {
+  background-color: rgb(28, 58, 108);
+  opacity: 1;
 }
 
 #left-top-container #view-time-span {
