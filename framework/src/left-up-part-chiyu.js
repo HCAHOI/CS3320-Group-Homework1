@@ -216,14 +216,13 @@ function initDepartmentChart () {
     borrowChartData.push({ department: dep.department, value: departmentBorrowMap.get(dep.department) || 0 });
   });
 
-
   // zig
   let finalData = [];
   for (let i = 0; i < topEnterDepartments.length; i++) {
     finalData.push({
       department: topEnterDepartments[i].department,
       enter: topEnterDepartments[i].value,
-      borrow: borrowChartData[i].value / 2,
+      borrow: Math.floor(borrowChartData[i].value / 2),
     });
   }
 
@@ -271,6 +270,48 @@ function initDepartmentChart () {
     .attr('width', function (d) { return xRight(d.borrow); })
     .attr('height', y.bandwidth())
     .attr('fill', 'darkorange');
+
+  // left labels
+  svg.append('text')
+    .attr('x', width / 4)
+    .attr('y', -9)
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'white')
+    .attr('font-size', '14px')
+    .attr('font-weight', 'bold')
+    .text('入馆人数');
+
+  svg.selectAll('.enter-label')
+    .data(finalData)
+    .enter().append('text')
+    .attr('x', d => { return xLeft(d.enter) / 2})
+    .attr('y', d => { return y(d.department) + y.bandwidth(); })
+    .attr('text-anchor', 'end')
+    .attr('fill', 'white')
+    .attr('font-size', '10px')
+    .attr('transform', 'translate(' + width / 24 * 7 + ', 0)')
+    .text(d => { return d.enter; });
+
+  // right labels
+  svg.append('text')
+    .attr('x', width / 8 * 5)
+    .attr('y', -9)
+    .attr('text-anchor', 'middle')
+    .attr('fill', 'white')
+    .attr('font-size', '14px')
+    .attr('font-weight', 'bold')
+    .text('借阅人数');
+
+  svg.selectAll('.borrow-label')
+    .data(finalData)
+    .enter().append('text')
+    .attr('x', d => { return width / 2 + xRight(d.borrow) + 5; })
+    .attr('y', d => { return y(d.department) + y.bandwidth(); })
+    .attr('text-anchor', 'start')
+    .attr('fill', 'white')
+    .attr('font-size', '10px')
+    // .attr('transform', 'translate(' + width / 24 * 7 + ', 0)')
+    .text(d => { return d.borrow; });
 
   svg.append('g')
     .attr('class', 'y axis')
