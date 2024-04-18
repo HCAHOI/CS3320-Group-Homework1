@@ -190,6 +190,7 @@ function initPieChart (idMap) {
       name: 'ID',
       type: 'pie',
       data: idArray,
+      radius: ['40%', '70%'],
     }],
   });
 }
@@ -437,8 +438,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let pieChartContainer = document.createElement('div');
   pieChartContainer.id = 'pie-chart-container';
-  pieChartContainer.style.width = '60%';
-  pieChartContainer.style.height = '120%';
+  pieChartContainer.style.width = '70%';
+  pieChartContainer.style.height = '160%';
   readerBox.appendChild(pieChartContainer);
 
   // departmentBox element
