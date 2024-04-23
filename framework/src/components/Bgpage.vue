@@ -25,7 +25,17 @@
               </div>
           </div>
           <div id="bottom-right-container">
-              <div id = 'A3Dbox' class="box" >
+              <div id = 'book-time-chart-container' class="box" >
+                <select id="seat-select" >
+                  <option value="522-A">522-A</option>
+                  <option value="523-A">523-A</option>
+                  <option value="523-B">523-B</option>
+                  <option value="523-C">523-C</option>
+                  <option value="523-D">523-D</option>
+                  <option value="523-E">523-E</option>
+                  <option value="523-F">523-F</option>
+                  <option value="523-G">523-G</option>
+                </select>
                 <Viewbox title="预约时间分布" :boxb="true">
                 </Viewbox>
               </div>
@@ -38,8 +48,6 @@
                       </select>
                     <select id="room-select"></select>
                   </div>
-                  <canvas id="room-chart"  style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></canvas>
-                  <div id="tooltip" style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></div>
                   <Viewbox title="教室预约时间查询" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
                 </div>
               </div>
@@ -202,7 +210,7 @@ input[type="date"] {
     height: 250px; /* 确保有足够的高度容纳 canvas 和 Viewbox */
 }
 
-#room-chart, #tooltip, Viewbox {
+#room-chartp, Viewbox {
     position: absolute;
     top: 0;
     left: 0;
@@ -210,16 +218,6 @@ input[type="date"] {
 
 #room-chart {
     z-index: 1; /* 确保 canvas 在最底层 */
-}
-
-#tooltip {
-        position: absolute;
-        display: none;
-        background-color: rgb(212, 212, 212);
-        border: 2px solid rgb(147, 143, 143);
-        padding: 8px;
-        border-radius: 10px; /* 圆角半径 */
-        z-index: 10; /* Tooltip 需要在 canvas 之上显示 */
 }
 
 Viewbox {

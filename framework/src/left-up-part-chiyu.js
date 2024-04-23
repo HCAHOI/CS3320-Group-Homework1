@@ -394,7 +394,6 @@ function processData () {
   enterData.forEach((record) => {
     // Department
     mapCountUpdate(record.Department, departmentEnterMap);
-
   });
 
   // unique dailyBookBorrowMap
