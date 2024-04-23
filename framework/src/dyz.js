@@ -334,8 +334,6 @@ export function initOccupationChart() {
         date.setDate(date.getDate() + 1);
     }
 
-    console.log (occupationData);
-
     // erase records which has the same start time
     for(let i = 0; i < 7; i++) {
         let dayData = occupationData[i];
@@ -392,6 +390,7 @@ export function initOccupationChart() {
               .attr('y', yScale(dayIndex))
               .attr('width', xScale(interval[1].getHours()) - xScale(interval[0].getHours())) // endTime - startTime
               .attr('height', yScale.bandwidth())
+              .attr('class', 'occupation-rect')
               .attr('fill', 'rgba(120, 200, 80, 0.8)');
         });
     });
@@ -403,21 +402,40 @@ export function initOccupationChart() {
     svg.append('g')
       .call(d3.axisLeft(yScale).tickFormat(d => `Day ${d + 1}`));
 
-    const legend = svg.append('g')
+    const legend_reserved = svg.append('g')
       .attr('transform', `translate(${30}, ${height - 200})`);
 
-    legend.append('rect')
+    legend_reserved.append('rect')
       .attr('width', 18)
       .attr('height', 18)
       .style('fill', 'rgba(120, 200, 80, 0.8)');
 
-    legend.append('text')
+    legend_reserved.append('text')
       .attr('x', 24)
       .attr('y', 9)
       .attr('dy', '0.35em')
       .style('text-anchor', 'start')
       .text('已预约')
       .style('fill', 'white');
+
+    const legend_available = svg.append('g')
+      .attr('transform', `translate(${200}, ${height - 200})`);
+
+    legend_available.append('rect')
+      .attr('width', 18)
+      .attr('height', 18)
+      .style('fill', 'grey');
+
+    legend_available.append('text')
+      .attr('x', 24)
+      .attr('y', 9)
+      .attr('dy', '0.35em')
+      .style('text-anchor', 'start')
+      .text('无人使用')
+      .style('fill', 'white');
+
+    occupationChart = svg;
+
 }
 
 export function updateOccupationChart() {
@@ -426,10 +444,59 @@ export function updateOccupationChart() {
         dateStr = '2023-12-01';
     }
     let date = new Date(dateStr);
+    let room = document.getElementById('room-select').value;
+    let roomMap = occupationMap.get(room);
 
-    // get data
+    let occupationData = [];
+    for(let i = 0; i < 7; i++) {
+        let dateStr = date.toDateString();
+        if(roomMap.has(dateStr)) {
+            occupationData.push(roomMap.get(dateStr));
+        } else {
+            occupationData.push([]);
+        }
+        date.setDate(date.getDate() + 1);
+    }
 
-    // generate
-    let option = {};
-    occupationChart.setOption(option);
+    for(let i = 0; i < 7; i++) {
+        let dayData = occupationData[i];
+        let dayMap = new Map();
+        for(let j = 0; j < dayData.length; j++) {
+            let interval = dayData[j];
+            let startTime = interval[0];
+            if(dayMap.has(startTime.toDateString())) {
+                dayData.splice(j, 1);
+                j--;
+            } else {
+                dayMap.set(startTime.toDateString(), 1);
+            }
+        }
+    }
+
+    let margin = {top: 50, right: 20, bottom: 30, left: 50};
+    let width = 400 - margin.left - margin.right;
+    let height = 250 - margin.top - margin.bottom;
+
+    occupationChart.selectAll('.occupation-rect').remove();
+
+    const xScale = d3.scaleLinear()
+      .domain([0, 24])
+      .range([0, width]);
+
+    const yScale = d3.scaleBand()
+      .domain(d3.range(7))
+      .rangeRound([0, height])
+      .paddingInner(0.5);
+
+    occupationData.forEach((dayData, dayIndex) => {
+        dayData.forEach(interval => {
+            occupationChart.append('rect')
+              .attr('x', xScale(interval[0].getHours()))
+              .attr('y', yScale(dayIndex))
+              .attr('width', xScale(interval[1].getHours()) - xScale(interval[0].getHours()))
+              .attr('height', yScale.bandwidth())
+              .attr('class', 'occupation-rect')
+              .attr('fill', 'rgba(120, 200, 80, 0.8)');
+        });
+    });
 }

@@ -1,50 +1,35 @@
 //now read json file and get data_list
 let json2 = null;
 let json_total = null;
-let day_to_show = null;
-let month_to_show = null;
-let year_to_show = null;
-
-
-function parse_file_name(file_path) {
-    let obj = {};
-    let arr = file_path.split('_');
-    obj['day'] = arr[0];
-    obj['month'] = arr[1];
-    obj['year'] = arr[2].split('.')[0];
-    return obj;
-}
 
 function find_correct_file_name(day, month, year) {
     return day + '_' + month + '_' + year + '.json';
 }
 
-//get the input "day" from the <label for="day">日:</label>
-// <input type="number" id="day" name="day" min="1" max="31" required>
+function updateDailyChart() {
+    let dateStr = document.getElementById('date-input').value;
+    let date = new Date(dateStr);
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
 
-function get_date() {
-    day_to_show = document.getElementById('day').value;
-    month_to_show = document.getElementById('month').value;
-    year_to_show = document.getElementById('year').value;
+    let chartDomTotal = document.getElementById('total-resource');
+    let myChartTotal = echarts.init(chartDomTotal);
+    let optionTotal ={};
 
+    let chartDomDaily = document.getElementById('daily-number');
+    let myChartDaily = echarts.init(chartDomDaily);
+    let optionDaily ={};
+    let peopleNumberPerLib = [];
 
-    var chartDom_total = document.getElementById('total_resource');
-    var myChart_total = echarts.init(chartDom_total);
-    var option_total ={};
+    let fileName = "../data/split_json/" + find_correct_file_name(day, month, year);
+    console.log(fileName);
 
-    var chartDom_daily = document.getElementById('daily_number');
-    var myChart_daily = echarts.init(chartDom_daily);
-    var option_daily ={};
-    let people_number_per_lib = [];
+    readJsonTotal('../data/00-图书馆资源总量.json');
+    readJson2(fileName);
 
-    let file_name = "../data/split_json/" + find_correct_file_name(day_to_show, month_to_show, year_to_show);
-    console.log(file_name);
-
-    read_json_total('../data/00-图书馆资源总量.json');
-    read_json2(file_name);
-
-//set loading animation
-    option_total = {
+    //set loading animation
+    optionTotal = {
         graphic: {
             elements: [
                 {
@@ -85,20 +70,20 @@ function get_date() {
             ]
         }
     };
-    option_daily = option_total;
+    optionDaily = optionTotal;
 
-    // myChart_total.setOption(option_total);
-    myChart_daily.setOption(option_daily);
+    // myChartTotal.setOption(option_total);
+    myChartDaily.setOption(optionDaily);
 
     setTimeout(function(){
-        myChart_total.clear();
-        // myChart_total = echarts.init(chartDom_total);
+        myChartTotal.clear();
+        // myChartTotal = echarts.init(chartDomTotal);
         let total_data_str = "";
         for (let i =0; i< json_total.index.length; i++){
             total_data_str += json_total.data[i][0] + ' ' + json_total.data[i][1] + '\n';
         }
 
-        option_total = {
+        optionTotal = {
             graphic: {
                 elements: [
                     {
@@ -147,34 +132,25 @@ function get_date() {
             }
         };
 
-        myChart_total.setOption(option_total);
-
-        // console.log(people_number_per_lib);
+        myChartTotal.setOption(optionTotal);
 
         setTimeout(function () {
-            myChart_daily.clear();
-            people_number_per_lib = calculate_people_number();
-            option_daily = {
+            myChartDaily.clear();
+            peopleNumberPerLib = calculate_people_number();
+            optionDaily = {
                 legend: {},
                 tooltip: {
                     trigger: 'axis',
                     showContent: false
                 },
                 dataset: {
-                    // source: [
-                    //     ['product', '2012', '2013', '2014', '2015', '2016', '2017', '2018'],
-                    //     ['Milk Tea', 56.5, 82.1, 88.7, 70.1, 53.4, 85.1, 90],
-                    //     ['Matcha Latte', 51.1, 51.4, 55.1, 53.3, 73.8, 68.7, 70],
-                    //     ['Cheese Cocoa', 40.1, 62.2, 69.5, 36.4, 45.2, 32.5, 80],
-                    //     ['Walnut Brownie', 25.2, 37.1, 41.2, 18, 33.9, 49.1, 30]
-                    // ]
                     source:[
                         ['product', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
                             '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'],
-                        people_number_per_lib[0],
-                        people_number_per_lib[1],
-                        people_number_per_lib[2],
-                        people_number_per_lib[3]
+                        peopleNumberPerLib[0],
+                        peopleNumberPerLib[1],
+                        peopleNumberPerLib[2],
+                        peopleNumberPerLib[3]
                     ]
                 },
                 xAxis: { type: 'category' },
@@ -224,11 +200,11 @@ function get_date() {
                     }
                 ]
             };
-            myChart_daily.on('updateAxisPointer', function (event) {
+            myChartDaily.on('updateAxisPointer', function (event) {
                 const xAxisInfo = event.axesInfo[0];
                 if (xAxisInfo) {
                     const dimension = xAxisInfo.value + 1;
-                    myChart_daily.setOption({
+                    myChartDaily.setOption({
                         series: {
                             id: 'pie',
                             label: {
@@ -242,18 +218,13 @@ function get_date() {
                     });
                 }
             });
-            myChart_daily.setOption(option_daily);
+            myChartDaily.setOption(optionDaily);
         });
-
-        option_daily && myChart_daily.setOption(option_daily);
-
-
+        optionDaily && myChartDaily.setOption(optionDaily);
     }, 1000);
-
-
 }
 
-function read_json2(file_path) {
+function readJson2(file_path) {
     fetch(file_path)
         .then(response => response.json())
         .then(data => {
@@ -264,7 +235,7 @@ function read_json2(file_path) {
         });
 }
 
-function read_json_total(file_path) {
+function readJsonTotal(file_path) {
     fetch(file_path)
         .then(response => response.json())
         .then(data => {

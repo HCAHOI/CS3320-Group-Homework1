@@ -3,7 +3,7 @@
       <Header></Header>
       <!-- 用两个box作为示例，具体使用请自行更改 -->
       <input id="date-input" name="date" type="date" value="2023-04-01" />
-      <div>
+      <div style="display: flex">
           <div id="left-top-container">
               <div id='reader-statistics' class="box">
                   <Viewbox
@@ -23,6 +23,17 @@
                       :boxb="true"
                   />
               </div>
+          </div>
+          <div id="right-top-container">
+            <div id="total-resource-container" style="width: 900px;height:200px;">
+              <Viewbox title="图书馆资源总览" :boxb="true"></Viewbox>
+            </div>
+            <div id="daily-number-container" style="width: 900px;height:400px;">
+              <Viewbox title="当日数据" :boxb="true"></Viewbox>
+            </div>
+            <div id="new-book-container" style="width: 900px;height:400px;">
+              <Viewbox title="新书榜单" :boxb="true"></Viewbox>
+            </div>
           </div>
           <div id="bottom-right-container">
               <div id = 'book-time-chart-container' class="box" >
