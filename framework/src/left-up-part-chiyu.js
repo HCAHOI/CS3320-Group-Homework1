@@ -329,8 +329,6 @@ function initDepartmentChart () {
     .attr('ticks', 5)
     .attr('transform', 'translate(' + width / 2 + ',' + (y.bandwidth() + y.padding()) * 6 + ')')
     .call(d3.axisBottom(xRight).ticks(2));
-
-
 }
 
 // --------------Data Processing----------------

@@ -1,6 +1,7 @@
 let bookTimeMap = new Map();    // timestamp -> array of data
-let occupationMap = new Map();  //
+let occupationMap = new Map();  //room -> (timestamp -> (startTime -> endTime))
 let bookTimeChart = null;
+let occupationChart = null;
 
 function mapCountUpdate (element, map) {
     if (!map.has(element)) {
@@ -48,7 +49,34 @@ function loadOccupationData () {
     xhrBorrow.onreadystatechange = function () {
         if (xhrBorrow.readyState === 4 && xhrBorrow.status === 200) {
             let occupationData = JSON.parse(xhrBorrow.responseText).data;
-            console.log('Finish Reading 06.json');
+
+            // record[4] -> room
+            occupationData.forEach((record) => {
+                let room = record[4];
+                let accurateStartDate = new Date(record[7]);
+                let accurateEndDate = new Date(record[8]);
+                // filter the records that not in the same day or start at dawn
+                if (accurateStartDate.getDate() !== accurateEndDate.getDate() || accurateStartDate.getHours() < 6 || accurateEndDate.getHours() < 6) {
+                    return;
+                }
+                // only year, month, day
+                let mapDate = new Date(accurateStartDate.getFullYear(), accurateStartDate.getMonth(), accurateStartDate.getDate());
+
+                // if no room log, add room
+                if (!occupationMap.has(room)) {
+                    occupationMap.set(room, new Map());
+                }
+                // if no date log, add date
+                if (!occupationMap.get(room).has(mapDate.toDateString())) {
+                    occupationMap.get(room).set(mapDate.toDateString(), []);
+                }
+
+                // add start time and end time
+                occupationMap.get(room).get(mapDate.toDateString()).push([accurateStartDate, accurateEndDate]);
+            });
+
+            console.log(occupationMap);
+            console.log('Finish Reading 07.json');
         }
     };
     xhrBorrow.send();
@@ -73,7 +101,6 @@ function initBookTimeChart() {
         // book times, people count
         seatData.push([bookCount, peopleCountSet.size]);
     })
-
 
     // generate chart
     bookTimeChart = echarts.init(document.getElementById('book-time-chart'));
@@ -186,7 +213,7 @@ function updateBookTimeChart() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    let bookTimeBox = document.querySelector('#book-time-chart-container .data-box')
+    let bookTimeBox = document.querySelector('#book-time-chart-container .data-box');
     bookTimeBox.style.display = 'flex';
     let chartContainer = document.createElement('div');
     chartContainer.style.width = '100%';
@@ -208,6 +235,26 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     bookTimeBox.appendChild(seatSelector);
 
+    let occupationBox = document.querySelector('#occupation-chart-container .data-box');
+    let selectors = document.createElement('div');
+    selectors.id = 'selectors';
+    let librarySelector = document.createElement('select');
+    librarySelector.id = 'library-select';
+    librarySelector.innerHTML = `
+      <option value="minhang1">闵行-主馆</option>
+      <option value="minhang2">闵行-包玉刚</option>
+    `;
+    selectors.appendChild(librarySelector);
+    let roomSelector = document.createElement('select');
+    roomSelector.id = 'room-select';
+    selectors.appendChild(roomSelector);
+    occupationBox.appendChild(selectors);
+
+    let occupationChartContainer = document.createElement('div');
+    occupationChartContainer.style.width = '100%';
+    occupationChartContainer.style.height = '100%';
+    occupationChartContainer.id = 'occupation-chart';
+    occupationBox.appendChild(occupationChartContainer);
 
     loadBookTimeData();
     loadOccupationData();
@@ -218,23 +265,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     generateRoomOptions();
-    generateOccupationChart();
-    document.getElementById("room-select").addEventListener("change", () => {
-        generateOccupationChart();
+    initOccupationChart();
+    document.getElementById('room-select').addEventListener('change', () => {
+        updateOccupationChart();
     });
-    document.getElementById("library-select").addEventListener("change", () => {
+    document.getElementById('library-select').addEventListener('change', () => {
         generateRoomOptions();
-        generateOccupationChart();
+        updateOccupationChart();
     });
 
-    let roomBox = document.querySelector('#A3Dbox .data-box')
-    roomBox.style.display = 'flex';
 });
 
-export function generateRoomOptions() {
-    let librarySelect = document.getElementById("library-select");
-    let roomSelect = document.getElementById("room-select");
-    roomSelect.innerHTML = ""; // Clear previous options
+export function generateRoomOptions () {
+    let librarySelect = document.getElementById('library-select');
+    let roomSelect = document.getElementById('room-select');
+    roomSelect.innerHTML = ''; // Clear previous options
 
     switch (librarySelect.value) {
         case "minhang1": {
@@ -246,7 +291,7 @@ export function generateRoomOptions() {
             ];
 
             rooms.forEach(function (room, index) {
-                addRoomOption(room, "Room " + room);
+                addRoomOption(room, room);
             });
             break;
         }
@@ -258,7 +303,7 @@ export function generateRoomOptions() {
             ];
 
             rooms.forEach(function (room) {
-                addRoomOption(room, "Room " + room);
+                addRoomOption(room, room);
             });
             break;
         }
@@ -272,31 +317,119 @@ export function addRoomOption(value, text) {
     document.getElementById("room-select").appendChild(option);
 }
 
-// Updated search function
-export function generateOccupationChart() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '../../data/room_occupancy_all.json', true);
-    let t_data = null;
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                try {
-                    t_data = JSON.parse(xhr.responseText);
-                    updateOccupationChart(t_data);
-                } catch (e) {
-                    console.error('Error parsing JSON!', e);
-                }
+export function initOccupationChart() {
+    let date = new Date(2023, 11, 1);
+    let room = document.getElementById('room-select').value;
+    let roomMap = occupationMap.get(room);
+
+    // get three days' data
+    let occupationData = [];
+    for(let i = 0; i < 7; i++) {
+        let dateStr = date.toDateString();
+        if(roomMap.has(dateStr)) {
+            occupationData.push(roomMap.get(dateStr));
+        } else {
+            occupationData.push([]);
+        }
+        date.setDate(date.getDate() + 1);
+    }
+
+    console.log (occupationData);
+
+    // erase records which has the same start time
+    for(let i = 0; i < 7; i++) {
+        let dayData = occupationData[i];
+        let dayMap = new Map();
+        for(let j = 0; j < dayData.length; j++) {
+            let interval = dayData[j];
+            let startTime = interval[0];
+            if(dayMap.has(startTime.toDateString())) {
+                dayData.splice(j, 1);
+                j--;
             } else {
-                console.error('HTTP Error: ' + xhr.status);
+                dayMap.set(startTime.toDateString(), 1);
             }
         }
-    };
-    xhr.send();
+    }
+
+    // generate
+    let margin = {top: 50, right: 20, bottom: 30, left: 50};
+    let width = 400 - margin.left - margin.right;
+    let height = 250 - margin.top - margin.bottom;
+
+    const svg = d3.select('#occupation-chart').append('svg')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .attr('transform', 'translate(0, 20)')
+      .append('g')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    const xScale = d3.scaleLinear()
+      .domain([0, 24])
+      .range([0, width]);
+
+    const yScale = d3.scaleBand()
+      .domain(d3.range(7))
+      .rangeRound([0, height])
+      .paddingInner(0.5);
+
+    // add background
+    svg.selectAll('rect')
+      .data(d3.range(7))
+      .enter()
+      .append('rect')
+      .attr('x', 0)
+      .attr('y', d => yScale(d))
+      .attr('width', width)
+      .attr('height', yScale.bandwidth())
+      .attr('fill', 'grey');
+
+
+    occupationData.forEach((dayData, dayIndex) => {
+        dayData.forEach(interval => {
+            svg.append('rect')
+              .attr('x', xScale(interval[0].getHours()))
+              .attr('y', yScale(dayIndex))
+              .attr('width', xScale(interval[1].getHours()) - xScale(interval[0].getHours())) // endTime - startTime
+              .attr('height', yScale.bandwidth())
+              .attr('fill', 'rgba(120, 200, 80, 0.8)');
+        });
+    });
+
+    svg.append('g')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale));
+
+    svg.append('g')
+      .call(d3.axisLeft(yScale).tickFormat(d => `Day ${d + 1}`));
+
+    const legend = svg.append('g')
+      .attr('transform', `translate(${30}, ${height - 200})`);
+
+    legend.append('rect')
+      .attr('width', 18)
+      .attr('height', 18)
+      .style('fill', 'rgba(120, 200, 80, 0.8)');
+
+    legend.append('text')
+      .attr('x', 24)
+      .attr('y', 9)
+      .attr('dy', '0.35em')
+      .style('text-anchor', 'start')
+      .text('已预约')
+      .style('fill', 'white');
 }
 
+export function updateOccupationChart() {
+    let dateStr = document.getElementById('date-input').value;
+    if (dateStr < '2023-11-01' || dateStr > '2023-12-31') {
+        dateStr = '2023-12-01';
+    }
+    let date = new Date(dateStr);
 
-export function updateOccupationChart(roomData) {
-    const selectedRoom = document.getElementById("room-select").value;
+    // get data
 
-
+    // generate
+    let option = {};
+    occupationChart.setOption(option);
 }

@@ -26,20 +26,10 @@
           </div>
           <div id="bottom-right-container">
               <div id = 'book-time-chart-container' class="box" >
-                <Viewbox title="共享办公预约" :boxb="true">
-                </Viewbox>
+                <Viewbox title="共享办公预约" :boxb="true"></Viewbox>
               </div>
-              <div id = 'classroomSearch'class="box">
-                <div id="room-search-chart" style="position: relative; height: 300px;">
-                  <div style="text-align: center; margin-bottom: 10px; position: absolute; top: 0; left: 300px; z-index: 10;">
-                      <select id="library-select" >
-                          <option value="minhang1">闵行-主馆</option>
-                          <option value="minhang2">闵行-包玉刚</option>
-                      </select>
-                    <select id="room-select"></select>
-                  </div>
-                  <Viewbox title="空间预约" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
-                </div>
+              <div id = 'occupation-chart-container' class="box">
+                  <Viewbox title="空间预约" :boxb="true"></Viewbox>
               </div>
           </div>
     </div>
@@ -197,23 +187,19 @@ input[type="date"] {
   top : 5px;
 }
 
+#bottom-right-container #selectors {
+  position: absolute;
+  right: 10px;
+  top : 5px;
+}
+
+
+#bottom-right-container #selectors button {
+  z-index: 100;
+}
+
 #bottom-right-container #book-time-chart {
   top: 10px;
-}
-
-#room-search-chart {
-    position: relative;
-    height: 250px;
-}
-
-#room-chartp, Viewbox {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#room-chart {
-    z-index: 1; /* 确保 canvas 在最底层 */
 }
 
 Viewbox {
