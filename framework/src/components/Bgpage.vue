@@ -26,17 +26,7 @@
           </div>
           <div id="bottom-right-container">
               <div id = 'book-time-chart-container' class="box" >
-                <select id="seat-select" >
-                  <option value="522-A">522-A</option>
-                  <option value="523-A">523-A</option>
-                  <option value="523-B">523-B</option>
-                  <option value="523-C">523-C</option>
-                  <option value="523-D">523-D</option>
-                  <option value="523-E">523-E</option>
-                  <option value="523-F">523-F</option>
-                  <option value="523-G">523-G</option>
-                </select>
-                <Viewbox title="预约时间分布" :boxb="true">
+                <Viewbox title="共享办公预约" :boxb="true">
                 </Viewbox>
               </div>
               <div id = 'classroomSearch'class="box">
@@ -48,7 +38,7 @@
                       </select>
                     <select id="room-select"></select>
                   </div>
-                  <Viewbox title="教室预约时间查询" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
+                  <Viewbox title="空间预约" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
                 </div>
               </div>
           </div>
@@ -201,13 +191,19 @@ input[type="date"] {
   width: 70vw;
 }
 
-#book-time-chart {
-  width: 60%;
+#bottom-right-container #seat-select {
+  position: absolute;
+  right: 10px;
+  top : 5px;
+}
+
+#bottom-right-container #book-time-chart {
+  top: 10px;
 }
 
 #room-search-chart {
     position: relative;
-    height: 250px; /* 确保有足够的高度容纳 canvas 和 Viewbox */
+    height: 250px;
 }
 
 #room-chartp, Viewbox {

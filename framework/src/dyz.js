@@ -194,6 +194,21 @@ document.addEventListener('DOMContentLoaded', function () {
     chartContainer.id = 'book-time-chart';
     bookTimeBox.appendChild(chartContainer);
 
+    let seatSelector = document.createElement('select');
+    seatSelector.id = 'seat-select';
+    seatSelector.innerHTML = `
+      <option value="522-A">522-A</option>
+      <option value="523-A">523-A</option>
+      <option value="523-B">523-B</option>
+      <option value="523-C">523-C</option>
+      <option value="523-D">523-D</option>
+      <option value="523-E">523-E</option>
+      <option value="523-F">523-F</option>
+      <option value="523-G">523-G</option>
+    `;
+    bookTimeBox.appendChild(seatSelector);
+
+
     loadBookTimeData();
     loadOccupationData();
 
