@@ -4,52 +4,46 @@
       <!-- 用两个box作为示例，具体使用请自行更改 -->
       <input id="date-input" name="date" type="date" value="2023-04-01" />
       <div>
-            <div id="left-top-container">
-                <div id='reader-statistics' class="box">
-                    <Viewbox
-                        title="读者画像"
-                        :boxb="true"
-                    />
-                </div>
-                <div id='department-distribution' class="box">
-                    <Viewbox
-                        title="读者学院分布"
-                        :boxb="true"
-                    />
-                </div>
-                <div id='borrow-top' class="box">
-                    <Viewbox
-                        title="借阅排行"
-                        :boxb="true"
-                    />
-                </div>
-            </div>
-            <div class="container">
-                <div id = 'A3Dbox' class="box" >
-                  <Viewbox title="预约时间分布" :boxb="true">
-                  </Viewbox>
-                  
-                </div>
-                <div id = 'classroomSearch'class="box">
-
-                  
-                  <div id="room-search-chart" style="position: relative; height: 300px;">
-                    <div style="text-align: center; margin-bottom: 10px; position: absolute; top: 0; left: 300px; z-index: 10;">
-                        <label for="location-select" style="color: white;">选择校区:</label>
-                        <select id="room-select"></select>
-                        <select id="location-select" >
-                            <option value="minhang1">闵行-主馆</option>
-                            <option value="minhang2">闵行-包玉刚</option>
-                        </select>
-                        <button id = "dyz-button" >Search</button>
+          <div id="left-top-container">
+              <div id='reader-statistics' class="box">
+                  <Viewbox
+                      title="读者画像"
+                      :boxb="true"
+                  />
+              </div>
+              <div id='department-distribution' class="box">
+                  <Viewbox
+                      title="读者学院分布"
+                      :boxb="true"
+                  />
+              </div>
+              <div id='borrow-top' class="box">
+                  <Viewbox
+                      title="借阅排行"
+                      :boxb="true"
+                  />
+              </div>
+          </div>
+          <div id="bottom-right-container">
+              <div id = 'A3Dbox' class="box" >
+                <Viewbox title="预约时间分布" :boxb="true">
+                </Viewbox>
+              </div>
+              <div id = 'classroomSearch'class="box">
+                <div id="room-search-chart" style="position: relative; height: 300px;">
+                  <div style="text-align: center; margin-bottom: 10px; position: absolute; top: 0; left: 300px; z-index: 10;">
+                      <select id="library-select" >
+                          <option value="minhang1">闵行-主馆</option>
+                          <option value="minhang2">闵行-包玉刚</option>
+                      </select>
+                    <select id="room-select"></select>
                   </div>
-                    <canvas id="room-chart"  style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></canvas>
-                    <div id="tooltip" style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></div>
-                    <Viewbox title="教室预约时间查询" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
-                  </div>
-            </div>
-            
-        </div>
+                  <canvas id="room-chart"  style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></canvas>
+                  <div id="tooltip" style="position: absolute; top: 50px; left: 0; z-index: 11;width:800px; height: calc(300px - 50px);"></div>
+                  <Viewbox title="教室预约时间查询" :boxb="true" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></Viewbox>
+                </div>
+              </div>
+          </div>
     </div>
     </div>
 </template>
@@ -78,9 +72,11 @@ export default {
     height: 120vh;
     width: 100vw;
 }
+
 .container {
     display: flex; /* 将容器设置为 flex 容器 */
 }
+
 .box {
     flex: 1; /* 每个子元素占据相等的空间 */
     height: 300px;
@@ -124,7 +120,7 @@ input[type="date"] {
   top: 0;
 }
 
-#left-top-container .in-title {
+.in-title {
   position: absolute;
   z-index: 0;
   margin-top: 0;
@@ -190,9 +186,20 @@ input[type="date"] {
   left: 20px;
   padding: 1px;
 }
+
+#bottom-right-container {
+  display: flex;
+  margin-right: 10px;
+  width: 70vw;
+}
+
+#book-time-chart {
+  width: 60%;
+}
+
 #room-search-chart {
     position: relative;
-    height: 300px; /* 确保有足够的高度容纳 canvas 和 Viewbox */
+    height: 250px; /* 确保有足够的高度容纳 canvas 和 Viewbox */
 }
 
 #room-chart, #tooltip, Viewbox {
@@ -205,7 +212,6 @@ input[type="date"] {
     z-index: 1; /* 确保 canvas 在最底层 */
 }
 
-
 #tooltip {
         position: absolute;
         display: none;
@@ -214,7 +220,7 @@ input[type="date"] {
         padding: 8px;
         border-radius: 10px; /* 圆角半径 */
         z-index: 10; /* Tooltip 需要在 canvas 之上显示 */
-    }
+}
 
 Viewbox {
     width: 100%;

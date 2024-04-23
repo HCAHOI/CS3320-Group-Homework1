@@ -1,14 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let readerBox = document.querySelector('#A3Dbox .data-box')
-    readerBox.style.display = 'flex';
-    let basicInfo = document.createElement('div');
-    basicInfo.textContent = '入馆人数: '
-    basicInfo.id = 'basic-info';
-    basicInfo.style.width = '600%';
-    basicInfo.style.height = '100%';
-    readerBox.appendChild(basicInfo);
+    let bookTimeBox = document.querySelector('#A3Dbox .data-box')
+    bookTimeBox.style.display = 'flex';
+    let chartContainer = document.createElement('div');
+    chartContainer.style.width = '100%';
+    chartContainer.style.height = '100%';
+    chartContainer.id = 'book-time-chart';
+    bookTimeBox.appendChild(chartContainer);
 
-    const echartsInstance = echarts.init(basicInfo);
+    const echartsInstance = echarts.init(chartContainer);
     const hours = ['0点', '1点', '2点', '3点', '4点', '5点', '6点', '7点', '8点', '9点', '10点', '11点', '12点', '13点', '14点', '15点', '16点', '17点', '18点', '19点', '20点', '21点', '22点', '23点'];
     const days = ['2024-3-24', '2024-3-25', '2024-3-26', '2024-3-27', '2024-3-28', '2024-3-29', '2024-3-30'];
     const data = [
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
 
     const barOpt = {
-        //backgroundColor: '#00265f',
         tooltip: {
             formatter: function (params) {
                 let series = params.seriesName;
@@ -44,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return series + '<br/>' +
                     days[val[1]] + '<br/>' +
                     hours[val[0]] + '<br/>值：' + val[2];
-            }
+            },
         },
         visualMap: {
             max: 80,
@@ -137,85 +135,72 @@ document.addEventListener('DOMContentLoaded', function () {
     // 渲染图表
     echartsInstance.setOption(barOpt);
 
-
-    showRooms();
-    document.getElementById("location-select").addEventListener("change", showRooms);
-
-    search();
-    document.getElementById("dyz-button").addEventListener("click", search);
+    generateRoomOptions();
+    generateOccupationChart();
+    document.getElementById("room-select").addEventListener("change", () => {
+        // generateRoomOptions();
+        generateOccupationChart();
+    });
+    document.getElementById("library-select").addEventListener("change", () => {
+        generateRoomOptions();
+        generateOccupationChart();
+    });
 
     let roomBox = document.querySelector('#A3Dbox .data-box')
     roomBox.style.display = 'flex';
 });
 
-export function showRooms() {
-    console.log("showRooms");
-    var locationSelect = document.getElementById("location-select");
-    var roomSelect = document.getElementById("room-select");
+export function generateRoomOptions() {
+    let librarySelect = document.getElementById("library-select");
+    let roomSelect = document.getElementById("room-select");
     roomSelect.innerHTML = ""; // Clear previous options
 
-    // Dynamically populate the room options based on the location selection
-    switch (locationSelect.value) {
-        case "minhang1":
-            var rooms = [
+    switch (librarySelect.value) {
+        case "minhang1": {
+            let rooms = [
                 "A215", "A216", "A315", "A316", "A415", "A416",
                 "B215", "B216", "B315", "B316", "B415", "B416",
                 "C315", "C316",
                 "E209", "E210", "E211", "E216", "E309", "E310", "E311", "E312", "E316"
             ];
 
-            // 添加房间选项
             rooms.forEach(function (room, index) {
                 addRoomOption(room, "Room " + room);
             });
             break;
-        case "minhang2":
-            var rooms = [
+        }
+        case "minhang2": {
+            let rooms = [
                 "306", "307", "308", "309", "311",
                 "407", "408", "409", "410", "411", "412", "413",
                 "619", "620", "621"
             ];
 
-            // 添加房间选项
             rooms.forEach(function (room) {
                 addRoomOption(room, "Room " + room);
             });
             break;
-        default:
-            break;
+        }
     }
 }
 
 export function addRoomOption(value, text) {
-    var option = document.createElement("option");
+    let option = document.createElement("option");
     option.value = value;
     option.text = text;
     document.getElementById("room-select").appendChild(option);
 }
 
-export function filterRoomDataByRoomName(data, roomName) {
-    const roomData = {};
-    for (const date in data) {
-        const roomDataForDate = data[date].filter(room => room['房间名称'] === roomName);
-
-        roomData[date] = roomDataForDate;
-    }
-    return roomData;
-}
-
-let borrowData = {};
-let roomData = null;
 // Updated search function
-export function search() {
+export function generateOccupationChart() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', '../../data/room_occupancy_all.json', true);  // 注意确保路径正确
+    xhr.open('GET', '../../data/room_occupancy_all.json', true);
     let t_data = null;
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {  // 确保请求已完成
-            if (xhr.status === 200) {  // 确保 HTTP 状态码为 200
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
                 try {
-                    t_data = JSON.parse(xhr.responseText);  // 解析 JSON 数据
-                    //console.log(t_data);  // 可选：打印数据以供检查
+                    t_data = JSON.parse(xhr.responseText);
                     visualize(t_data);
                 } catch (e) {
                     console.error('Error parsing JSON!', e);
@@ -225,10 +210,7 @@ export function search() {
             }
         }
     };
-
     xhr.send();
-    //console.log(t_data)
-    
 }
 
 export function roundRect(ctx, x, y, width, height, radius) {
@@ -246,7 +228,6 @@ export function roundRect(ctx, x, y, width, height, radius) {
 }
 
 export function visualize(roomData) {
-    //console.log("visualize");
     const roomInput = document.getElementById("room-select");
     const selectedRoom = roomInput.value;
     console.log(selectedRoom);
@@ -322,11 +303,9 @@ export function visualize(roomData) {
         const mouseX = evt.clientX - rect.left;
         const mouseY = evt.clientY - rect.top;
 
-        //console.log(mouseX, mouseY);
-        //console.log(rect.left, rect.top);
         for (const block of blocks) {
             const { x, y, width, height, startTime, endTime } = block;
-            
+
             if (mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + 0.5* height) {
                 tooltip.style.display = 'block';
                 console.log(x, y, width, height, startTime, endTime);
@@ -339,15 +318,7 @@ export function visualize(roomData) {
         tooltip.style.display = 'none'; // Hide tooltip by default
     });
 
-    const baseWidth = 400;  // 基准宽度
-    const baseFontSize = 12;  // 基准字体大小
-
-    // 计算字体缩放比例，这里使用宽度比例
-    let currentWidth=canvas.width;
-    const fontScale = currentWidth / baseWidth;
-
     // 计算新的字体大小
-    const fontSize = baseFontSize * fontScale;  // 根据宽度调整字体大小
     // Additional rendering setups like axis labels can be handled similarly
     // Draw x-axis labels (hours)
     ctx.font = "9px Arial";
