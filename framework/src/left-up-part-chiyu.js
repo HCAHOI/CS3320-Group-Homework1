@@ -476,10 +476,6 @@ document.addEventListener('DOMContentLoaded', function () {
   borrowTopBox.appendChild(viewTimeSpan);
   borrowTopBox.appendChild(viewTop4);
 
-  document.getElementById('date-input').addEventListener('change', function () {
-    // let date = document.getElementById('date-input').value;
-    // console.log(date);
-  });
 
   document.getElementById('week-view').addEventListener('click', function () {
     let date = document.getElementById('date-input').value;

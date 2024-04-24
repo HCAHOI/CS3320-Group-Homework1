@@ -31,7 +31,7 @@
             <div id="daily-number-container" style="width: 900px;height:400px;">
               <Viewbox title="当日数据" :boxb="true"></Viewbox>
             </div>
-            <div id="new-book-container" style="width: 900px;height:400px;">
+            <div id="new-book-container" style="width: 300px;height:300px;">
               <Viewbox title="新书榜单" :boxb="true"></Viewbox>
             </div>
           </div>
