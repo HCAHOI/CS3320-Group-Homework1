@@ -335,7 +335,7 @@ function initDepartmentChart () {
 
 function loadEnterData () {
   let xhrEnter = new XMLHttpRequest();
-  xhrEnter.open('GET', '../../data/02-2023年全年入馆数据.json', false);
+  xhrEnter.open('GET', '../data/02-2023年全年入馆数据.json', false);
   xhrEnter.onreadystatechange = function () {
     if (xhrEnter.readyState === 4 && xhrEnter.status === 200) {
       enterData = JSON.parse(xhrEnter.responseText).RECORDS;
@@ -347,7 +347,7 @@ function loadEnterData () {
 
 function loadBorrowData () {
   let xhrBorrow = new XMLHttpRequest();
-  xhrBorrow.open('GET', '../../data/01-2023年全年图书借阅预约归还等数据.json', false);
+  xhrBorrow.open('GET', '../data/01-2023年全年图书借阅预约归还等数据.json', false);
   xhrBorrow.onreadystatechange = function () {
     if (xhrBorrow.readyState === 4 && xhrBorrow.status === 200) {
       borrowData = JSON.parse(xhrBorrow.responseText).RECORDS;
@@ -436,14 +436,15 @@ document.addEventListener('DOMContentLoaded', function () {
   let pieChartContainer = document.createElement('div');
   pieChartContainer.id = 'pie-chart-container';
   pieChartContainer.style.width = '70%';
-  pieChartContainer.style.height = '160%';
+  pieChartContainer.style.height = '100%';
   readerBox.appendChild(pieChartContainer);
 
   // departmentBox element
   let departmentChartContainer = document.createElement('div');
   departmentChartContainer.id = 'department-chart-container';
   departmentChartContainer.style.width = '100%';
-  departmentChartContainer.style.height = '16vh';
+  departmentChartContainer.style.height = '32vh';
+  departmentChartContainer.style.marginTop = '7vh';
   departmentBox.appendChild(departmentChartContainer);
 
   // borrowTopBox element

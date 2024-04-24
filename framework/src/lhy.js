@@ -121,7 +121,7 @@ function initTotalChart() {
           top: 'center',
           style: {
             text: total_data_str,
-            fontSize: 18,
+            fontSize: 14,
             fontWeight: 'bold',
             lineDash: [0, 200],
             lineDashOffset: 0,
@@ -175,7 +175,7 @@ function initDailyChart() {
 
   myChartDaily = echarts.init(document.getElementById('daily-number'));
 
-  readJson2("../../data/split_json/" + find_correct_file_name(day, month, year));
+  readJson2("../data/split_json/" + find_correct_file_name(day, month, year));
 
   //set loading animation
   let peopleNumberPerLib = calculate_people_number();
@@ -272,7 +272,7 @@ function updateDailyChart() {
 
   console.log(date);
 
-  readJson2("../../data/split_json/" + find_correct_file_name(day, month, year));
+  readJson2("../data/split_json/" + find_correct_file_name(day, month, year));
 
   console.log(json2);
 
@@ -338,24 +338,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let totalResource = document.createElement('div');
   totalResource.id = 'total-resource';
-  totalResource.style.width = '800px';
-  totalResource.style.height = '100px';
+  totalResource.style.width = '50vw';
+  totalResource.style.height = '10vh';
   totalResourceContainer.appendChild(totalResource);
 
   let dailyNumber = document.createElement('div');
   dailyNumber.id = 'daily-number';
-  dailyNumber.style.width = '800px';
-  dailyNumber.style.height = '400px';
-  dailyNumber.style.marginTop = '10px';
+  dailyNumber.style.width = '50vw';
+  dailyNumber.style.height = '35vh';
+  dailyNumber.style.marginTop = '5vh';
   dailyNumberContainer.appendChild(dailyNumber);
 
   let newBook = document.createElement('div');
   newBook.id = 'new-book';
-  newBook.style.width = '300px';
-  newBook.style.height = '300px';
+  newBook.style.width = '18.5vw';
+  newBook.style.height = '50.3vh';
   newBookContainer.appendChild(newBook);
 
-  read_json('../../data/04-新书榜单.json');
+  read_json('../data/04-新书榜单.json');
   initNewBookChart();
   initTotalChart();
   initDailyChart();

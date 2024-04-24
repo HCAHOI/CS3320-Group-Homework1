@@ -20,7 +20,7 @@ function getWeek (data) {
 
 function loadBookTimeData () {
     let xhrBorrow = new XMLHttpRequest();
-    xhrBorrow.open('GET', '../../data/06-2021年11月-2024年4月共享办公位预约情况.json', false);
+    xhrBorrow.open('GET', '../data/06-2021年11月-2024年4月共享办公位预约情况.json', false);
     xhrBorrow.onreadystatechange = function () {
         if (xhrBorrow.readyState === 4 && xhrBorrow.status === 200) {
             let bookTimeData = JSON.parse(xhrBorrow.responseText).data;
@@ -45,7 +45,7 @@ function loadBookTimeData () {
 
 function loadOccupationData () {
     let xhrBorrow = new XMLHttpRequest();
-    xhrBorrow.open('GET', '../../data/07-231101-240331小组学习面试空间预约情况.json', false);
+    xhrBorrow.open('GET', '../data/07-231101-240331小组学习面试空间预约情况.json', false);
     xhrBorrow.onreadystatechange = function () {
         if (xhrBorrow.readyState === 4 && xhrBorrow.status === 200) {
             let occupationData = JSON.parse(xhrBorrow.responseText).data;

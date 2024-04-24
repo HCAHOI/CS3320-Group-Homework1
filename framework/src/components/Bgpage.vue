@@ -25,13 +25,15 @@
               </div>
           </div>
           <div id="right-top-container">
-            <div id="total-resource-container" style="width: 800px;height:100px;">
+            <div id="total-resource-container">
               <Viewbox title="图书馆资源总览" :boxb="true"></Viewbox>
             </div>
-            <div id="daily-number-container" style="width: 800px;height:400px;">
+            <div id="daily-number-container">
               <Viewbox title="当日数据" :boxb="true"></Viewbox>
             </div>
-            <div id="new-book-container" style="width: 300px;height:300px;">
+          </div>
+          <div id="right-bottom-container">
+            <div id="new-book-container">
               <Viewbox title="新书榜单" :boxb="true"></Viewbox>
             </div>
           </div>
@@ -43,6 +45,22 @@
                   <Viewbox title="空间预约" :boxb="true"></Viewbox>
               </div>
           </div>
+          <div id="middle-left-container">
+            <div id='book-borrow-trend' class="box">
+                <Viewbox
+                    title="图书借还趋势"
+                    :boxb="true"
+                />
+            </div>
+          </div>
+          <div id="middle-right-container">
+            <div id='book-search-popularity' class="box">
+                <Viewbox
+                    title="检索热度"
+                    :boxb="true"
+                />
+            </div>
+          </div>  
     </div>
     </div>
 </template>
@@ -68,7 +86,7 @@ export default {
 <style>
 .bgpage{
     background: url(src/assets/true.png);
-    height: 120vh;
+    height: 118vh;
     width: 100vw;
 }
 
@@ -81,11 +99,22 @@ export default {
     height: 300px;
     margin: 10px;
 }
-
+#middle-left-container .box{
+  height: 25vh;
+}
+#middle-right-container .box{
+  height: 25vh;
+}
+#bottom-right-container .box{
+  height: 31vh;
+}
+#left-top-container .box{
+  height: 35vh;
+}
 #date-input {
   position: absolute;
-  top: 10px;
-  left: 30px;
+  top: 4vh;
+  left: 3vw;
 }
 
 input[type="date"] {
@@ -110,13 +139,29 @@ input[type="date"] {
   color: black;
   opacity: 1;
 }
-
+#right-top-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 11vh;
+  left: 31vw;
+  width: 50vw;
+}
+#right-bottom-container {
+  display: flex;
+  position: absolute;
+  top: 11vh;
+  left:81.3vw;
+}
 #left-top-container {
+  position:absolute;
   display: flex;
   flex-direction: column;
   font-size: 1em;
   width: 30vw;
-  top: 0;
+  top: 10.5vh;
+  left: 1vw;
+  height: 45vh;
 }
 
 .in-title {
@@ -188,10 +233,14 @@ input[type="date"] {
 
 #bottom-right-container {
   display: flex;
-  margin-right: 10px;
-  width: 70vw;
+  position: absolute;
+  top: 85.7vh;
+  left: 30.27vw;
+  width: 70.4vw;
 }
-
+#book-time-chart-container {
+  margin-right: -0.5vw;
+}
 #bottom-right-container #seat-select {
   position: absolute;
   right: 10px;
@@ -211,6 +260,20 @@ input[type="date"] {
 
 #bottom-right-container #book-time-chart {
   top: 10px;
+}
+#middle-left-container {
+  position: absolute;
+  top: 60.5vh;
+  left: 30.35vw;
+  flex-direction: row;
+  width:35.8vw;
+}
+#middle-right-container {
+  position: absolute;
+  top: 60.5vh;
+  left: 64.8vw;
+  flex-direction: row;
+  width:35.9vw;
 }
 
 Viewbox {
