@@ -2,7 +2,7 @@
     <div class="bgpage">
       <Header></Header>
       <!-- 用两个box作为示例，具体使用请自行更改 -->
-      <input id="date-input" name="date" type="date" value="2023-04-01" />
+      <input id="date-input" name="date" type="date" value="2023-12-01" />
       <div style="display: flex">
           <div id="left-top-container">
               <div id='reader-statistics' class="box">
@@ -25,10 +25,10 @@
               </div>
           </div>
           <div id="right-top-container">
-            <div id="total-resource-container" style="width: 900px;height:200px;">
+            <div id="total-resource-container" style="width: 800px;height:100px;">
               <Viewbox title="图书馆资源总览" :boxb="true"></Viewbox>
             </div>
-            <div id="daily-number-container" style="width: 900px;height:400px;">
+            <div id="daily-number-container" style="width: 800px;height:400px;">
               <Viewbox title="当日数据" :boxb="true"></Viewbox>
             </div>
             <div id="new-book-container" style="width: 300px;height:300px;">

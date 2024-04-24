@@ -109,7 +109,7 @@ function initTotalChart() {
 
   let total_data_str = "";
   for (let i = 0; i < json_total.length; i++){
-    total_data_str += json_total[i][0] + ' ' + json_total[i][1] + '\n';
+    total_data_str += json_total[i][0] + ' ' + json_total[i][1] + '  ';
   }
 
   let optionTotal = {
@@ -121,13 +121,13 @@ function initTotalChart() {
           top: 'center',
           style: {
             text: total_data_str,
-            fontSize: 20,
+            fontSize: 18,
             fontWeight: 'bold',
             lineDash: [0, 200],
             lineDashOffset: 0,
             fill: 'transparent',
-            stroke: '#08f',
-            lineWidth: 1,
+            // stroke: '#08f',
+            // lineWidth: 1,
           },
           keyframeAnimation: {
             duration: 2000,
@@ -183,7 +183,7 @@ function initDailyChart() {
     legend: {},
     tooltip: {
       trigger: 'axis',
-      showContent: false
+      showContent: false,
     },
     dataset: {
       source:[
@@ -290,24 +290,6 @@ function updateDailyChart() {
       ]
     },
   };
-  // myChartDaily.on('updateAxisPointer', function (event) {
-  //   const xAxisInfo = event.axesInfo[0];
-  //   if (xAxisInfo) {
-  //     const dimension = xAxisInfo.value + 1;
-  //     myChartDaily.setOption({
-  //       series: {
-  //         id: 'pie',
-  //         label: {
-  //           formatter: '{b}: {@[' + dimension + ']} ({d}%)'
-  //         },
-  //         encode: {
-  //           value: dimension,
-  //           tooltip: dimension
-  //         }
-  //       }
-  //     });
-  //   }
-  // });
   myChartDaily.setOption(optionDaily);
 }
 
@@ -356,14 +338,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let totalResource = document.createElement('div');
   totalResource.id = 'total-resource';
-  totalResource.style.width = '900px';
-  totalResource.style.height = '200px';
+  totalResource.style.width = '800px';
+  totalResource.style.height = '100px';
   totalResourceContainer.appendChild(totalResource);
 
   let dailyNumber = document.createElement('div');
   dailyNumber.id = 'daily-number';
-  dailyNumber.style.width = '900px';
+  dailyNumber.style.width = '800px';
   dailyNumber.style.height = '400px';
+  dailyNumber.style.marginTop = '10px';
   dailyNumberContainer.appendChild(dailyNumber);
 
   let newBook = document.createElement('div');
